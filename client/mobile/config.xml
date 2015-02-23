@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.realboard.client"
+        versionCode = "10"
+        version     = "1.0.0" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>RealBoard - Client</name>
+    
+    <description>
+        RealBoard-Client
+    </description>
+
+    <author href="http://mymorkid.blogspot.com" email="morkid@gmail.com">
+        Morkid
+    </author>
+    <preference name="load-url-timeout" value="60000" />
+</widget>

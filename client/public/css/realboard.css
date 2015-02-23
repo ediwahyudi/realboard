@@ -1,0 +1,81 @@
+/* Icons */
+.ux-notification-icon-information {
+	background-image: url('../img/notification/icon16_info.png');
+}
+.ux-notification-icon-error {
+	background-image: url('../img/notification/icon16_error.png');
+}
+/* Using standard theme */
+.ux-notification-window .x-window-body {
+	text-align: center;
+	padding: 15px 5px 15px 5px;
+}
+/* Custom styling */
+.ux-notification-light .x-window-header {
+	background-color: transparent;
+}
+body .ux-notification-light {
+	background-image: url('../img/notification/fader.png');
+}
+.ux-notification-light .x-window-body {
+	text-align: center;
+	padding: 15px 5px 20px 5px;
+	background-color: transparent;
+	border: 0px solid white;
+}
+
+.x-tree-no-lines .x-tree-elbow-end-plus,
+.x-tree-elbow-img,
+.x-tree-no-lines .x-tree-elbow-end-minus {
+	background-image: none;
+	visibility:hidden;
+} 
+.CodeMirror{
+	height:100%;
+	overflow:auto;
+}
+.CodeMirror-scroll{
+	width: 100%
+}
+#welcome-container{
+	width:100%;
+	display: table;
+	height: 100%;
+	text-align: center;
+	padding-top: 10%;
+	font-size: 20px;
+	background-color: #DEF6E7;
+}
+#welcome-container .fa.fa-desktop{
+	font-size: 10em;
+}
+#welcome-container .fa.fa-laptop{
+	font-size: 8em;
+}
+#welcome-container .fa.fa-5x{
+	color: #222;
+}
+#welcome-container .R{
+	color: #FFA500;
+}
+#welcome-container .B{
+	color: #333333;
+}
+#welcome-container h1 small{
+	color: #DEF6E7;
+	font-size: 16px;
+	display: block;
+	padding: 5px;
+	/*border-top:1px dotted #d5d5d5;*/
+	background-color: #222;
+	height: 300px;
+	width: 100%;
+}
+#browser-preview-frame{
+	width:100%;
+	min-height:280px;
+	display:table;
+	overflow:scroll;
+	border:0;
+	height:100%;
+}
