@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"/>
+	<title>RealBoard - Client</title>
+	<link rel="stylesheet" href="assets/css/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="assets/css/opensans.css">
+	<link rel="stylesheet" href="assets/css/style.css">
+	<script src="assets/js/jquery-1.11.0.min.js"></script>
+	<script src="assets/js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="assets/js/firebase.js"></script>
+	<script src="assets/js/jquery.md5.js"></script>
+</head>
+<body>
+	<!-- SIGNIN PAGE -->
+	<div data-role="page" class="ui-responsive-panel" id="signin-page" data-url="signin-page" data-title="Signin &raquo; RealBoard - Client">
+	    <div data-role="header" data-theme="a" data-position="fixed">
+	        <h1><span class="R">Real</span><em class="B">Board</em> - Client</h1>
+	    </div>
+	    <div role="main" class="ui-content">
+	        <form id="form-signin">
+	        	<h3 class="ui-bar ui-bar-a ui-corner-all">Signin<small id="signin-message"></small></h3>
+      			<div class="ui-body ui-body-a ui-corner-all">
+	      			<label for="signin-email">Email :</label>
+					<input type="text" required="required" name="uid" id="signin-email" placeholder="you@example.com">
+			        <label for="signin-password">Password :</label>
+					<input type="password" required="required" name="passwd" id="signin-password" placeholder="Your Password">
+					<button type="submit" id="signin-submit" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-check ui-btn-b">Signin</button>
+      			</div>
+	        </form>
+	    </div>
+	    <div data-role="footer" data-theme="a" data-position="fixed">
+	        <h4><small>Realtime collaborative IDE and simple project management</small></h4>
+	    </div>
+	</div>
+	<!-- END OF SIGNIN PAGE -->
+
+	<!-- DISCUSSION PAGE -->
+	<div data-role="page" class="ui-responsive-panel" id="discussion-page" data-url="discussion-page" data-title="Discussion &raquo; RealBoard - Client">
+	    <div data-role="header" data-theme="a" data-position="fixed">
+	        <h1><span class="R">Real</span><em class="B">Board</em> - Discussion</h1>
+	        <a href="#panel-discussion" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bars">Open left panel</a>
+	    </div>
+	    <div role="main" class="ui-content">
+	        <table data-role="table" id="discussion-table" data-mode="reflow" class="ui-responsive table-stroke">
+			    <thead>
+			        <tr>
+			            <th data-priority="persist" width="20%">User</th>
+			            <th data-priority="persist" width="10%">Date</th>
+			            <th data-priority="1">Message</th>
+			        </tr>
+			    </thead>
+			    <tbody id="discussion-body">
+			        <tr>
+			            <th colspan="3">Waiting for data ...</td>
+			        </tr>
+			    </tbody>
+			</table>
+	    </div>
+	    <div data-role="panel" data-position-fixed="true" data-display="overlay" id="panel-discussion" data-theme="a">
+	        <ul data-role="listview" data-theme="d">
+            	<li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
+                <li><a href="#discussion-page">Discussion</a></li>
+                <li><a href="#project-page">Project</a></li>
+                <li><a href="#activity-page">User Activity</a></li>
+                <li><a href="#team-page">Team</a></li>
+                <li><a href="#signin-page">Sign out</a></li>
+			</ul>
+	    </div>
+	    <div data-role="footer" data-theme="a" data-position="fixed">
+	    	<div class="ui-content">
+	    		<form id="footer-form" method="post">
+	    			<label for="discussion-text">Send message :</label>
+	    			<input type="text" name="discussion" id="discussion-text" placeholder="Type here">
+	        		<button type="submit" id="discussion-submit" class="ui-btn ui-corner-all ui-shadow ui-btn-icon-left ui-icon-check ui-btn-b">Send</button>
+	    		</form>
+	    	</div>
+	    	<hr>
+	        <h4><small>Realtime collaborative IDE and simple project management</small></h4>
+	    </div>
+	</div>
+	<!-- END OF DISCUSSION PAGE -->
+
+	<!-- PROJECT PAGE -->
+	<div data-role="page" class="ui-responsive-panel" id="project-page" data-url="project-page" data-title="Project &raquo; RealBoard - Client">
+	    <div data-role="header" data-theme="a" data-position="fixed">
+	        <h1><span class="R">Real</span><em class="B">Board</em> - Project</h1>
+	        <a href="#panel-project" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bars">Open left panel</a>
+	    </div>
+	    <div role="main" class="ui-content">
+	    	<ul id="search-project" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Project..." data-filter-theme="a"></ul>
+	    	<!--
+		    <ul data-role="listview" data-inset="true" data-shadow="false" data-theme="a" data-filter="true"
+		    data-filter-placeholder="Search Client">
+			  <li data-role="collapsible" data-filtertext="Hello" data-iconpos="right" data-inset="false">
+			    <h2>Birds</h2>
+			    <ul data-role="listview" data-theme="b">
+			      <li><a href="#">Condor</a></li>
+			      <li><a href="#">Eagle</a></li>
+			      <li><a href="#">Sparrow</a></li>
+			    </ul>
+			  </li>
+			  <li data-filtertext="Hello saja"><a href="#">Humans</a></li>
+			  <li data-role="collapsible" data-filtertext="Hello2" data-iconpos="right" data-inset="false">
+			    <h2>Fish</h2>
+			    <ul data-role="listview" data-theme="b">
+			      <li><a href="#">Salmon</a></li>
+			      <li><a href="#">Pollock</a></li>
+			      <li><a href="#">Trout</a></li>
+			    </ul>
+			  </li>
+			  <li data-role="collapsible" data-filtertext="Hello3" data-iconpos="right" data-inset="false">
+			    <h2>Choose your preference</h2>
+			    <form>
+			      <fieldset data-role="controlgroup" data-type="horizontal">
+			        <label>Birds<input type="checkbox" id="choose-birds-inset"></label>
+			        <label>Humans<input type="checkbox" id="choose-humans-inset"></label>
+			        <label>Fish<input type="checkbox" id="choose-fish-inset"></label>
+			      </fieldset>
+			    </form>
+			  </li>
+			</ul>
+			-->
+	    </div>
+	    <div data-role="panel" data-position-fixed="true" data-display="overlay" id="panel-project" data-theme="a">
+	        <ul data-role="listview" data-theme="d">
+            	<li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
+                <li><a href="#discussion-page">Discussion</a></li>
+                <li><a href="#project-page">Project</a></li>
+                <li><a href="#activity-page">User Activity</a></li>
+                <li><a href="#team-page">Team</a></li>
+                <li><a href="#signin-page">Sign out</a></li>
+			</ul>
+	    </div>
+	    <div data-role="footer" data-theme="a" data-position="fixed">
+	        <h4><small>Realtime collaborative IDE and simple project management</small></h4>
+	    </div>
+	</div>
+	<!-- END OF PROJECT PAGE -->
+
+	<!-- ACTIVITY PAGE -->
+	<div data-role="page" class="ui-responsive-panel" id="activity-page" data-url="activity-page" data-title="Activity &raquo; RealBoard - Client">
+	    <div data-role="header" data-theme="a" data-position="fixed">
+	        <h1><span class="R">Real</span><em class="B">Board</em> - Activity</h1>
+	        <a href="#panel-activity" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bars">Open left panel</a>
+	    </div>
+	    <div role="main" class="ui-content">
+	        <table data-role="table" id="activity-table" data-mode="reflow" class="ui-responsive table-stroke">
+			    <thead>
+			        <tr>
+			            <th data-priority="persist">User Name</th>
+			            <th data-priority="1">Email</th>
+			            <th data-priority="1">Sign</th>
+			            <th data-priority="2">Date Time</th>
+			            <th data-priority="2">IP Address</th>
+			        </tr>
+			    </thead>
+			    <tbody id="activity-body">
+			        <tr>
+			            <th colspan="5">Waiting for data ...</th>
+			        </tr>
+			    </tbody>
+			</table>
+	    </div>
+	    <div data-role="panel" data-position-fixed="true" data-display="overlay" id="panel-activity" data-theme="a">
+	        <ul data-role="listview" data-theme="d">
+            	<li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
+                <li><a href="#discussion-page">Discussion</a></li>
+                <li><a href="#project-page">Project</a></li>
+                <li><a href="#activity-page">User Activity</a></li>
+                <li><a href="#team-page">Team</a></li>
+                <li><a href="#signin-page">Sign out</a></li>
+			</ul>
+	    </div>
+	    <div data-role="footer" data-theme="a" data-position="fixed">
+	        <h4><small>Realtime collaborative IDE and simple project management</small></h4>
+	    </div>
+	</div>
+	<!-- END OF ACTIVITY PAGE -->
+
+	<!-- TEAM PAGE -->
+	<div data-role="page" class="ui-responsive-panel" id="team-page" data-url="team-page" data-title="Team &raquo; RealBoard - Client">
+	    <div data-role="header" data-theme="a" data-position="fixed">
+	        <h1><span class="R">Real</span><em class="B">Board</em> - Team</h1>
+	        <a href="#panel-team" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-bars">Open left panel</a>
+	    </div>
+	    <div role="main" class="ui-content">
+	        <table data-role="table" id="team-table" data-mode="reflow" class="ui-responsive table-stroke">
+			    <thead>
+			        <tr>
+			            <th data-priority="persist">Full Name</th>
+			            <th data-priority="1">Email</th>
+			            <th data-priority="2">Status</th>
+			            <!--<th data-priority="2">#</th>-->
+			        </tr>
+			    </thead>
+			    <tbody id="team-body">
+			        <tr>
+			        	<th colspan="3">Waiting for data ...</th>
+			        </tr>
+			    </tbody>
+			</table>
+	    </div>
+	    <div data-role="panel" data-position-fixed="true" data-display="overlay" id="panel-team" data-theme="a">
+	        <ul data-role="listview" data-theme="d">
+            	<li data-icon="delete"><a href="#" data-rel="close">Close</a></li>
+                <li><a href="#discussion-page">Discussion</a></li>
+                <li><a href="#project-page">Project</a></li>
+                <li><a href="#activity-page">User Activity</a></li>
+                <li><a href="#team-page">Team</a></li>
+                <li><a href="#signin-page">Sign out</a></li>
+			</ul>
+	    </div>
+	    <div data-role="footer" data-theme="a" data-position="fixed">
+	        <h4><small>Realtime collaborative IDE and simple project management</small></h4>
+	    </div>
+	</div>
+	<!-- END OF ACTIVTEAMITY PAGE -->
+	
+<script>
+
+	var RealBoard = new Firebase('https://realboard.firebaseio.com/');
+	
+	RealBoard.child("sign").on("value",function( buffer ){
+		var data = buffer.val();
+		if(!data)return false;
+		$(document.body).data("rb_sign",data).trigger("update.sign");
+	});
+
+	RealBoard.child("user").on("value",function( buffer ){
+		var data = buffer.val();
+		if(!data)return false;
+		$(document.body).data("rb_user",data).trigger("update.user");
+	});
+
+	RealBoard.child("chat").on("value",function( buffer ){
+		var data = buffer.val();
+		if(!data)return false;
+		$(document.body).data("rb_discussion",data).trigger("update.discussion");
+	});
+
+	$(document).on("update.sign","body",function(){
+		var t = $(this);
+		var data = t.data("rb_sign");
+		if(data){
+			var html = "";
+			$.each(data,function(i,o){
+				if(o.user_name){
+					html+= '<tr>'+
+						'<th>'+o.user_name+'</th>'+
+						'<td>'+o.user_email+'</td>'+
+						'<td>'+o.sign_type+'</td>'+
+						'<td>'+o.sign_date+' '+o.sign_time+'</td>'+
+						'<td>'+o.sign_ip+'</td>'+
+					'</tr>';
+				}
+			});
+			$("#activity-body").html(html);
+		}
+	});
+
+	$(document).on("update.user","body",function(){
+		var t = $(this);
+		var data = t.data("rb_user");
+		var status = {"online":"color:#00ff00;font-weight:bold","offline":"color:#ff0000;font-style:italic"};
+		if(data){
+			var html = "";
+			$.each(data,function(i,o){
+				if(o && o.user_name){
+					html+= '<tr>'+
+						'<th>'+o.user_name+'</th>'+
+						'<td>'+o.user_email+'</td>'+
+						'<td style="'+status[o.user_active]+'">'+o.user_active+'</td>'+
+						//'<td>-</td>'+
+					'</tr>';
+				}
+			});
+			$("#team-body").html(html);
+		}
+	});
+
+	$(document).on("update.discussion","body",function(){
+		var t = $(this);
+		var data = t.data("rb_discussion");
+		if(data){
+			var html = "";
+			$.each(data,function(i,o){
+				if(o){
+					var d = new Date(o.date).toISOString();
+					var dt = d.substring(0,10) +" "+ d.substring(11,19);
+					html = '<tr>'+
+						'<th>'+o.user.user_name+'</th>'+
+						'<td>'+dt+'</td>'+
+						'<td>'+o.data+'</td>'+
+					'</tr>'+html;
+				}
+			});
+			$("#discussion-body").html(html);
+		}
+	});
+
+	$(document.body).on("pagechange",function(){
+		var _self = $(this);
+		var id = _self.pagecontainer("getActivePage").attr("id");
+		if(id !== "signin-page"){
+			if(!localStorage.getItem("Sess")){
+				$( ":mobile-pagecontainer" ).pagecontainer( "change", "#signin-page");
+			}else{
+				var Sess = JSON.parse(localStorage.getItem("Sess"));
+				RealBoard.child("user/"+Sess.user_id).update({user_active:"online"});
+			}
+		}
+		else{
+			var Sess = JSON.parse(localStorage.getItem("Sess"));
+			if(Sess){
+				var d = new Date().toISOString();
+				var dataSign = {
+					sign_agent:navigator.userAgent,
+					sign_date:d.substring(0,10),
+					sign_time:d.substring(11,19),
+					sign_type:"out",
+					user_email:Sess.user_email,
+					user_name:Sess.user_name,
+					sign_ip:"0"
+				};
+				RealBoard.child("sign").push(dataSign);
+
+				RealBoard.child("user/"+Sess.user_id).update({user_active:"offline"});
+			}
+			localStorage.removeItem("Sess");
+		}
+	});
+
+	$(document).on("submit","#form-signin",function(e){
+		e.preventDefault();
+		var email = $("#signin-email").val();
+		var password = $.md5($("#signin-password").val() || "*");
+		$("#signin-message").html(" Request validation...");
+		RealBoard.child("user").orderByChild("user_email").equalTo(email).once("value",function(buffer){
+			var result = buffer.val();
+			if(!result){
+				$("#signin-message").html(" Undefined email or password");
+			}else{
+				var data = {};
+				for(var i in result){
+					data = result[i];
+				}
+				if(data.user_password == password){
+					// if(data.user_active == "online"){
+					// 	$("#signin-message").html(" User already signed in");
+					// }else{
+						localStorage.setItem("Sess",JSON.stringify(data));
+						var d = new Date().toISOString();
+						RealBoard.child("user/"+data.user_id).update({user_active:"online"});
+						RealBoard.child("sign").push({
+							sign_agent:navigator.userAgent,
+							sign_date:d.substring(0,10),
+							sign_time:d.substring(11,19),
+							sign_type:"in",
+							user_email:data.user_email,
+							user_name:data.user_name,
+							sign_ip:"0"
+						});
+						$( ":mobile-pagecontainer" ).pagecontainer( "change", "#activity-page");
+					// }
+				}
+				else{
+					$("#signin-message").html(" Undefined email or password");
+				}
+			}
+			$("#signin-email,#signin-password").val("");
+		});
+		return false;
+	});
+
+	$(document).on("submit","#footer-form",function(e){
+		e.preventDefault();
+		var message = $("#discussion-text").val();
+		var Sess = JSON.parse(localStorage.getItem("Sess"));
+		if(Sess && message.replace(/[^a-zA-Z0-9]/gi,'') != ''){
+			var data = {
+				data:message,
+				date:new Date().toLocaleString(),
+				ip:Sess.user_ip,
+				server:"firebase",
+				user:Sess
+			}
+			RealBoard.child("chat").push(data);
+			$("#discussion-text").val("");
+		}
+	})
+	$( document ).on( "pagecreate", '[data-role="page"]', function() {
+		var _self = $(this);
+		var id = _self.attr("id");
+
+	    $( document ).on( "swipeleft swiperight", '[data-role="page"]', function( e ) {
+	    	var _this = $(this);
+	        if ( $( ".ui-page-active",_this ).jqmData( "panel" ) !== "open" ) {
+	            if ( e.type === "swiperight" ) {
+	                $( '[data-role="panel"]',_this ).panel( "open" );
+	            }
+	        }
+	    });
+	    if( id == "project-page" ){
+	    	$( "#search-project" ).on( "filterablebeforefilter", function ( e, data ) {
+		        var $ul 	= $( this ),
+		            $input 	= $( data.input ),
+		            value 	= $input.val(),
+		            html 	= "";
+
+		        $ul.html( "" );
+
+		        if ( value && value.length > 2 ) {
+
+		            $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+		            $ul.listview( "refresh" );
+
+		            $.ajax({
+		                url: "https://realboard.firebaseio.com/project.json",
+		                dataType: "jsonp",
+		                crossDomain: true,
+		                data: {
+		                    search: $input.val()
+		                }
+		            })
+		            .then( function ( response ) {
+		            	var data = response;
+		                $.each( data, function ( i, val ) {
+		                    html += "<li>"+
+					                    "<a href='#'>" + 
+					                    //val.client_name + " &raquo; " +
+					                    val.project_title +
+					                    " <small><em>" + val.project_env + "</em></small>" +
+					                    "</a>"+
+		                    		"</li>";
+		                });
+		                
+		                $ul.html( html );
+		                $ul.listview( "refresh" );
+		                $ul.trigger( "updatelayout");
+		            });
+		        }
+		    });
+	    }
+	});
+</script>
+</body>
+</html>
