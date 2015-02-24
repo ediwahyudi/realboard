@@ -3,7 +3,7 @@ request = require('request'),
 Firebase = require("firebase"),
 fs = require("fs");
 
-var configFile = fs.readFileSync("./../config/config.json",{encoding:"UTF-8"});
+var configFile = fs.readFileSync(__dirname + "/../config/config.json",{encoding:"UTF-8"});
 var configData = JSON.parse(configFile);
 var RealBoardFirebase = new Firebase(configData.firebase_url);
 RealBoardFirebase.child("chat").remove();
