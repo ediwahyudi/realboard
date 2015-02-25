@@ -353,4 +353,17 @@ class Manager extends CI_Controller
 		//$this->store->migrate();
 	}
 	
+	function getTaskReport()
+	{
+		$from = strtotime($this->input->get("from"));
+		$to = strtotime($this->input->get("to"));
+		
+		$projects = $this->input->get("projects");
+		if($projects && !is_array($projects))
+			$projects = explode(",",$projects);
+
+		$report = $this->store->get_task_report($from,$to,$projects);
+		$this->output->set_output($report);
+	}
+
 }

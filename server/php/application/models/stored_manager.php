@@ -17,61 +17,14 @@ class Stored_manager extends CI_Model
 	function migrate()
 	{
 		$query = array();
-		$query[] = 'DROP TABLE ""rb_task"';
-		$query[] = 'DROP TABLE ""rb_job"';
-		$query[] = 'CREATE TABLE "main".""rb_job" (
-						"job_id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-						"job_title"  TEXT,
-						"job_desc"  TEXT,
-						"job_datestart"  TEXT,
-						"job_datefinish"  TEXT,
-						"job_status"  TEXT,
-						"project_id"  INTEGER
-					)';
-		$query[] = 'ALTER TABLE "rb_task" RENAME TO "_rb_task_old_20150202"';
-		$query[] = 'CREATE TABLE "rb_task" (
-						"task_id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-						"task_title"  TEXT,
-						"task_desc"  TEXT,
-						"task_comment"  TEXT,
-						"task_status"  TEXT,
-						"task_level" TEXT,
-						"task_deadlinedate"  TEXT,
-						"task_deadlinetime"  TEXT,
-						"task_finishdate"  TEXT,
-						"task_finishtime"  TEXT,
-						"user_id"  INTEGER,
-						"job_id"  INTEGER
-					)';
-		$query[] = 'INSERT INTO "rb_task" (
-						"task_id",
-						"task_title",
-						"task_desc",
-						"task_comment",
-						"task_status",
-						"task_deadlinedate",
-						"task_deadlinetime",
-						"user_id",
-						"job_id"
-					) SELECT
-						"task_id",
-						"task_title",
-						"task_desc",
-						"task_comment",
-						"task_status",
-						"task_deadlinedate",
-						"task_deadlinetime",
-						"user_id",
-						"job_id"
-					FROM
-						"_rb_task_old_20150202"';
-		$query[] = 'DROP TABLE "_rb_task_old_20150202"';
 		$query[] = 'DROP VIEW "rb_view_task"';
-		$query[] = 'CREATE VIEW rb_view_task AS 
+		$query[] = 'CREATE VIEW "rb_view_task" AS 
 					SELECT
 						rb_job.job_title || ". (" || rb_client.client_name || ", " || rb_project.project_title || ", " || rb_project.project_env || ")" AS task_summary,
 						rb_task.task_deadlinedate || " " || rb_task.task_deadlinetime AS task_deadline,
 						rb_task.task_finishdate || " " || rb_task.task_finishtime AS task_finish,
+						strftime("%s",rb_task.task_deadlinedate || " " || rb_task.task_deadlinetime) task_deadline_unix,
+						strftime("%s",rb_task.task_finishdate || " " || rb_task.task_finishtime) AS task_finish_unix,
 						group_concat(rb_user.user_name) user_name,
 						group_concat(rb_user.user_id) user_id,
 						rb_task.task_title,
@@ -105,11 +58,14 @@ class Stored_manager extends CI_Model
 					LEFT JOIN rb_user ON rb_user.user_id = rb_taskuser.user_id
 					WHERE rb_job.job_status != "prepared" AND rb_project.project_env NOT IN ("plan","closed")
 					GROUP BY rb_task.task_id';
-		$query[] = 'CREATE VIEW rb_view_task_det AS 
+		$query[] = 'DROP VIEW "rb_view_task_det"';
+		$query[] = 'CREATE VIEW "rb_view_task_det" AS 
 					SELECT
 						rb_job.job_title || ". (" || rb_client.client_name || ", " || rb_project.project_title || ", " || rb_project.project_env || ")" AS task_summary,
 						rb_task.task_deadlinedate || " " || rb_task.task_deadlinetime AS task_deadline,
 						rb_task.task_finishdate || " " || rb_task.task_finishtime AS task_finish,
+						strftime("%s",rb_task.task_deadlinedate || " " || rb_task.task_deadlinetime) task_deadline_unix,
+						strftime("%s",rb_task.task_finishdate || " " || rb_task.task_finishtime) AS task_finish_unix,
 						rb_user.user_name,
 						rb_user.user_id,
 						rb_task.task_title,
@@ -142,26 +98,6 @@ class Stored_manager extends CI_Model
 					LEFT JOIN rb_taskuser ON rb_taskuser.task_id = rb_task.task_id
 					LEFT JOIN rb_user ON rb_user.user_id = rb_taskuser.user_id
 					WHERE rb_job.job_status != "prepared" AND rb_project.project_env NOT IN ("plan","closed")';
-		//================================= OVERWRITE MODE =================================
-		$query = array(
-			'ALTER TABLE "main"."rb_user" RENAME TO "_rb_user_old_20150214"',
-			'CREATE TABLE "main"."rb_user" (
-				"user_id"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-				"user_ip"  TEXT,
-				"user_name"  TEXT,
-				"user_email"  TEXT,
-				"user_password"  TEXT,
-				"user_theme"  TEXT DEFAULT gray,
-				"user_theme_ide"  TEXT DEFAULT cobalt,
-				"user_ide_engine"  TEXT,
-				"user_share"  TEXT,
-				"user_active"  TEXT DEFAULT 0
-				)',
-			'INSERT INTO "main"."rb_user" ("user_id", "user_ip", "user_name", "user_email", "user_password", "user_theme", "user_theme_ide", "user_share", "user_active") SELECT "user_id", "user_ip", "user_name", "user_email", "user_password", "user_theme", "user_theme_ide", "user_share", "user_active" FROM "_rb_user_old_20150214"',
-			'UPDATE "main"."sqlite_sequence" SET seq = 12 WHERE name = \'rb_user\'',
-			'DROP TABLE _rb_user_old_20150214',
-			'UPDATE rb_user SET user_ide_engine = "ace"');
-
 		foreach($query as $q)
 		{
 			$this->db->query($q);
@@ -797,5 +733,147 @@ class Stored_manager extends CI_Model
 			$opt["where"]["user_id"] = $id;
 		}
 		return $this->_output_filters($opt);
+	}
+
+	function get_task_report($date_start = NULL, $date_end = NULL, $project_ids = array())
+	{
+		$project = $this->db
+		->join("client c","c.client_id=project.client_id","LEFT")
+		->get("project")->result();
+		$from = date("Y-m-d",$date_start);
+		$to = date("Y-m-d",$date_end);
+		$where = array(
+			"task_deadline >=" => $from,
+			"task_deadline <=" => $to);
+		$output = '';
+		foreach($project as $o)
+		{
+			$theJob = $this->db->get_where("job",array("project_id"=>$o->project_id))->result();
+			$jobs = '';
+			foreach($theJob as $job)
+			{
+				$tasks = '';
+				$this->db->where($where);
+				if($project_ids)$this->db->where_in("project_id",$project_ids);
+				$theTask = $this->db->get_where("view_task",array("job_id"=>$job->job_id))->result();
+				// exit($this->db->last_query());
+				foreach ($theTask as $task)
+				{
+					$level = preg_replace("/[^0-9]/",'',$task->task_level);
+					$tasks .= "<tr class='status-{$task->task_status}'>
+						<td><ol><li>".str_replace(",","<li>",$task->user_name)."</td>
+						<td>{$task->task_title}</td>
+						<td>{$task->task_deadline}</td>
+						<td>{$task->task_finish}</td>
+						<td>
+							<div class='bar bar-{$level}' style='width:{$level}%'>{$level}</div>
+						</td>
+						<td>{$task->task_status}</td>
+					</tr>";
+				}
+				if($tasks == '')continue;
+				$jobs .= "<tr style='background-color:#d5d5d5'>
+							<th colspan='6'>JOB : {$job->job_title} ".date("D ,d F Y",strtotime($job->job_datestart))."</th>
+						</tr>
+						<tr style='background-color:#F2EDA2'>
+							<th>Team / Developer</th>
+							<th>Task</th>
+							<th width='130px'>Deadline</th>
+							<th width='130px'>Finish</th>
+							<th width='60px'>Level</th>
+							<th width='60px'>Status</th>
+						</tr>".$tasks;
+			}
+			if($jobs == '')continue;
+			$output.= "<div class='container'>
+						<div class='sub-container'>
+							<h1>
+								{$o->client_name}. {$o->project_title} <small><em>[{$o->project_env}]</em></small>
+								<br>
+								<small>{$from} &raquo; {$to}</small>
+							</h1>
+							<hr>
+							<table class='table' border='1'>
+								{$jobs}
+							</table>
+						</div>
+					</div>";
+		}
+		return '<!DOCTYPE html>
+		<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<title>Task Report</title>
+				<style>
+					body{
+						margin:0;
+						font-family:arial;
+						color:#333;
+						font-size:12px;
+					}
+					.container{
+						display:block;
+						width:100%;
+						border-bottom:5px double #d5d5d5;
+						position:relative;
+					}
+					.sub-container{
+						padding:5px;
+					}
+					hr{
+						border-top:0;
+						border-left:0;
+						border-bottom:1px solid #d5d5d5;
+						height:1px;
+						border-right:0;
+						background-color:transparent;
+					}
+					table{
+						width:100%;
+						border-collapse:separate;
+						border-spacing:0;
+					}
+					th,td{
+						vertical-align:top;
+					}
+					ul,ol{
+						margin:0;
+					}
+					h1{
+						text-align:center;
+					}
+					
+					.bar{
+						display:block;
+						width:100%;
+						line-height:20px;
+						font-weight:bold;
+					}
+					.bar-25{
+						background-color:#ff0000;
+						color:#fff;
+					}
+					.bar-50{
+						background-color:#FFA500;
+						color:#333;
+					}
+					.bar-75{
+						background-color:#ffff00;
+						color:#333;
+					}
+					.bar-100{
+						background-color:#0000ff;
+						color:#fff;
+					}
+					.status-waiting,.status-progress,.status-revision{
+						background-color:#E41E1E;
+						color:#fff;
+					}
+				</style>
+			</head>
+			<body>
+				'.$output.'
+			</body>
+		</html>';
 	}
 }
