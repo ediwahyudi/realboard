@@ -25,6 +25,7 @@ var RealBoardIDE = {
 	engine:"ace"
 };
 var socketParams = [];
+
 RealBoard.openSocket = function(){
 	var onLoadSocket = function(){
 		if(typeof io != "undefined"){
@@ -100,7 +101,7 @@ RealBoard.openSocket = function(){
 			if(Sess.hasAccess("manager")){
 				RealBoard.on("responseApplyTask",function(data){
 					serverInfo(data,"Task.applied",'tc');
-					Ext.getCmp("main-panel").setActiveTab(1);
+					Ext.getCmp("main-data").setActiveTab(1);
 				});
 			}
 			RealBoard.on("responseTask",function(){
@@ -108,15 +109,15 @@ RealBoard.openSocket = function(){
 			});
 			RealBoard.on("responseNewTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.added",'tc');
-				Ext.getCmp("main-panel").setActiveTab(1);
+				Ext.getCmp("main-data").setActiveTab(1);
 			});
 			RealBoard.on("responseUpdateTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.updated",'tc');
-				Ext.getCmp("main-panel").setActiveTab(1);
+				Ext.getCmp("main-data").setActiveTab(1);
 			});
 			RealBoard.on("responseRemoveTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.removed",'tc');
-				Ext.getCmp("main-panel").setActiveTab(1);
+				Ext.getCmp("main-data").setActiveTab(1);
 			});
 			RealBoard.on("responseSave",function(data){
 				serverInfo(data,"File.saved");
@@ -164,6 +165,7 @@ var testSocket = function(){
 	RealBoard.on("responseTest",function(message){console.log(message)});
 	RealBoard.emit("test","Hey socket, am i connected to socket protocol?");
 };
+
 var mySession = function(){
 	this.User = {user_id:0,user_access:[]};
 };
@@ -494,7 +496,7 @@ var Menu = Ext.create('Ext.panel.Panel', {
 						}]
 					}]
 			}]
-});
+		});
 var createTipFor = function(id,text){
 	var tip = Ext.create('Ext.tip.ToolTip', {
 			target:id,
@@ -1438,7 +1440,7 @@ var applyTask = function(data,callback){
 		maximized:true,
 		y:70
 	}).show();
-};
+}
 Tree.on('itemcontextmenu', function(view, record, item, index, event) {
     var node = record;
     var t = node.get('text');
@@ -1754,7 +1756,7 @@ var serverInfo = function(data,resType,pos){
 	'<br>Ip : '+data.ip,
 	resType.join(" "),
 	pos).show();
-};
+}
 var requestCollab = function(data){
 	if(Sess.get("user_share") == "no"){
 		return;
@@ -1773,7 +1775,7 @@ var requestCollab = function(data){
 			}
 		}
 	});
-};
+}
 Tree.on('itemdblclick', function(target, record, item, index, e, eOpts) {
     if (record.get("cls") == "file") {
         RealBoardIDE.open(record);
@@ -2378,6 +2380,92 @@ var createContainer = function() {
 					}]
 			}]
 		});
+		
+		var formProjectReport = Ext.create("Ext.form.Panel",{
+									bodyPadding: 10,
+									listeners:{
+										afterrender:function(){
+											var stored = Ext.getCmp("project-grid").getStore();
+											stored.each(function(row,index){
+												Ext.getCmp("project-report-list").add({
+													boxLabel:row.get("client_name") +" "+ row.get("project_title"),
+													name:"project_id[]",
+													inputValue:row.get("project_id"),
+													checked:true});
+											});
+										}
+									},
+									items: [{
+										fieldLabel:"From",
+										name:"from",
+										xtype:'datefield',
+										allowBlank:false,
+										editable:false,
+										format:"Y-m-d",
+										width:230,
+										value:''
+									},{
+										fieldLabel:"To",
+										name:"to",
+										xtype:'datefield',
+										allowBlank:false,
+										editable:false,
+										format:"Y-m-d",
+										width:230,
+										value:''
+									},{
+										xtype: 'checkboxgroup',
+								        fieldLabel: 'Projects',
+								        id:"project-report-list",
+								        columns: 3,
+								        vertical: true,
+								        allowBlank:true
+									},{
+										type:"panel",
+										id:"project-report-result",
+										height:360,
+										minWidth:600,
+										border:0,
+										bodyPadding:0,
+										layout:"fit",
+										html:'<div id="project-report-frame"></div>'
+									}],
+									buttons:[{
+										text:'<i class="fa fa-search"></i> Preview',
+										handler:function(){
+											var form = this.up("form").getForm();
+											var v = form.getValues();
+											if(form.isValid()){
+												Ext.Ajax.request({
+													url:API_URL+"/getTaskReport",
+													method:'GET',
+													params:{from:v.from,to:v.to,projects:v["project_id[]"].join(",")},
+													success:function(o){
+														var p = document.getElementById("project-report-frame");
+														p.innerHTML = '';
+														var f = document.createElement("iframe");
+														f.style.width = '100%';
+														f.style.height = '360px';
+														f.style.border = 0;
+														f.style.display = 'block';
+														f.id = 'project-report-frame-id';
+														var b = document.createElement("button");
+														b.type = 'button';
+														b.id = 'button-report-frame';
+														b.innerHTML = '<i class="fa fa-print"></i> Print';
+														b.addEventListener("click",function(){
+															f.contentWindow.print();
+														});
+														p.appendChild(b);
+														p.appendChild(f);
+														f.contentWindow.document.write(o.responseText);
+													}
+												});
+											}
+										}
+									}]
+								});
+
 		Ext.getCmp("main-menu").add({
 			text: 'Project',
 			arrowAlign: 'right',
@@ -2423,6 +2511,34 @@ var createContainer = function() {
 						Ext.getCmp("project-window").show();
 					}
 				}
+			}, {
+				text:"Report",
+				arrowAlign:"right",
+				menu:[{
+					text:"Project Report",
+					listeners:{
+						click:function(){
+							if(!Ext.getCmp("project-report-window")){
+								Ext.create("Ext.window.Window",{
+									title:'<i class="fa fa-tasks"></i> Project Report',
+									id:"project-report-window",
+									border:0,
+									width: 600,
+									layout: 'fit',
+									resizable:true,
+									items:[formProjectReport],
+									maximized:true,
+									maximizable:true,
+									closeAction:"hide",
+									y:100
+								});
+							}
+							Ext.getCmp("project-report-window").show();
+						}
+					}
+				}, {
+					text:"Team perform report"
+				}]
 			}]
 		});
 	}
@@ -2528,14 +2644,6 @@ var createContainer = function() {
 		            closable: false,
 		            layout:'fit',
 		            items: Tree
-		        },{
-		        	title:'<i class="fa fa-tasks"></i>',
-		        	tooltip:"Task Manager",
-		        	closable: false,
-		            layout:'fit',
-			        autoScroll:true,
-			        overflowY:"scroll",
-		        	items:userTaskGrid
 		        }]
 		    }, {
 		        region: 'south',
@@ -2589,6 +2697,16 @@ var createContainer = function() {
 			        autoScroll:true,
 			        overflowX:"scroll",
 		            items: usersGrid
+		        },{
+		        	//title:'<i class="fa fa-tasks"></i>',
+		        	iconCls:'fa fa-tasks',
+		        	title:'Task Manager',
+		        	tooltip:"Task Manager",
+		        	closable: false,
+		            layout:'fit',
+			        autoScroll:true,
+			        overflowY:"scroll",
+		        	items:userTaskGrid
 		        }]
 		    }, {
 		        region: 'east',
