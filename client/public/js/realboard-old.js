@@ -1390,7 +1390,6 @@ var applyTask = function(data,callback){
 			fieldLabel: 'Comment',
 			grow      : true,
 			value:data.task_comment,
-			name:"task_comment",
 			anchor:'100%'
 		},{
 	        xtype: 'checkboxgroup',
