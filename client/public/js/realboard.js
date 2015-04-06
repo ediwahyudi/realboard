@@ -1,5 +1,11 @@
 Ext.syncRequire(['Ext.util.Cookies', 'Ext.window.MessageBox','Ext.data.JsonP','Ext.ux.window.Notification']);
 var myCookie = Ext.util.Cookies;
+myCookie.exDate = function(){
+	var x = new Date();
+	x.setDate(x.getDate() + 1);
+	return x;
+}
+
 var RealBoard = {
 	on:function(){return false},
 	emit:function(){return false}
@@ -65,6 +71,7 @@ RealBoard.openSocket = function(){
 				if(discussion && data.server == "local"){
 					discussion.expand();
 					applyChat(data);
+					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseChatFirebase",function(data){
@@ -72,6 +79,7 @@ RealBoard.openSocket = function(){
 				if(discussion && data.server == "firebase"){
 					discussion.expand();
 					applyChat(data);
+					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseChatFirebase",function(data){
@@ -79,6 +87,7 @@ RealBoard.openSocket = function(){
 				if(discussion){
 					discussion.expand();
 					applyChat(data);
+					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseUpdateProfile"+Sess.getId(),function(){
@@ -87,69 +96,88 @@ RealBoard.openSocket = function(){
 			if(Sess.get("user_share") == "yes"){
 				RealBoard.on("requestInviteCollab"+Sess.getId(),function(data){
 					requestCollab(data);
+					Sess.refresh();
 				});
 				RealBoard.on("requestInviteCollabAll",function(data){
 					requestCollab(data);
+					Sess.refresh();
 				});
 				RealBoard.on("responseReceiveCollab"+Sess.getId(),function(data){
 					serverInfo(data,"User.joined");
+					Sess.refresh();
 				});
 				RealBoard.on("responseRejectCollab"+Sess.getId(),function(data){
 					serverInfo(data,"User.rejected");
+					Sess.refresh();
 				});
 			}
 			if(Sess.hasAccess("manager")){
 				RealBoard.on("responseApplyTask",function(data){
 					serverInfo(data,"Task.applied",'tc');
 					Ext.getCmp("main-data").setActiveTab(1);
+					Sess.refresh();
 				});
 			}
 			RealBoard.on("responseTask",function(){
 				Ext.getCmp("main-task-grid").getStore().load({params:{user:Sess.getId()}});
+				Sess.refresh();
 			});
 			RealBoard.on("responseNewTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.added",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
+				Sess.refresh();
 			});
 			RealBoard.on("responseUpdateTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.updated",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
+				Sess.refresh();
 			});
 			RealBoard.on("responseRemoveTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.removed",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
+				Sess.refresh();
 			});
 			RealBoard.on("responseSave",function(data){
 				serverInfo(data,"File.saved");
+				Sess.refresh();
 			});
 			RealBoard.on("responseNewfile",function(data){
 				serverInfo(data,"File.created");
+				Sess.refresh();
 			});
 			RealBoard.on("responseNewfolder",function(data){
 				serverInfo(data,"Folder.created");
+				Sess.refresh();
 			});
 			RealBoard.on("responseRemovefile",function(data){
 				serverInfo(data,"File.removed");
+				Sess.refresh();
 			});
 			RealBoard.on("responseRemovefolder",function(data){
 				serverInfo(data,"Folder.removed");
+				Sess.refresh();
 			});
 			RealBoard.on("responseUpload",function(data){
 				serverInfo(data,"File.uploaded");
+				Sess.refresh();
 			});
 			RealBoard.on("responseRenamefile",function(data){
 				serverInfo(data,"File.renamed");
+				Sess.refresh();
 			});
 			RealBoard.on("responseRenamefolder",function(data){
 				serverInfo(data,"Folder.renamed");
+				Sess.refresh();
 			});
 			RealBoard.on("responseConnected",function(data){
 				serverInfo(data,"User.connected");
 				refreshUserGrid();
+				Sess.refresh();
 			});
 			RealBoard.on("responseLeave",function(data){
 				serverInfo(data,"User.disconnected");
 				refreshUserGrid();
+				Sess.refresh();
 			});
 		}
 	};
@@ -215,7 +243,7 @@ mySession.prototype.refresh = function(){
 		url:API_URL+"/getUsers",
 		params:{user:_this.getId(),id:_this.getId()},
 		success:function(data){
-			myCookie.set("IDE",Ext.encode(data));
+			myCookie.set("IDE",Ext.encode(data), myCookie.exDate());
 			_this.User = data;
 			_this.getSession().getAccess();
 			if(typeof changeTheme == "function"){
@@ -307,7 +335,7 @@ var changeIDEEngine = function(engine){
 			_this.injected = {"ace":true,"codemirror":true};
 		});
 	}
-	myCookie.set("openIDE",openedIDE);
+	myCookie.set("openIDE",openedIDE,myCookie.exDate());
 };
 var reusable = null;
 var Notify = function(html,title,position){
@@ -759,14 +787,14 @@ var tabHistory = {
 		    openHistory.splice(openHistory.indexOf(id), 1);
 		}
 		if(!clearForSet){
-			myCookie.set("openIDE",Ext.encode(openHistory));
+			myCookie.set("openIDE",Ext.encode(openHistory),myCookie.exDate());
 		}
 	},
 	set:function(id){
 		this.clear(id,true);
 		if(openHistory.indexOf(id) == -1){
 			openHistory.push(id);
-			myCookie.set("openIDE",Ext.encode(openHistory));
+			myCookie.set("openIDE",Ext.encode(openHistory),myCookie.exDate());
 		}
 	},
 	restore:function(){
@@ -922,6 +950,7 @@ RealBoardIDE.open = function(node,nodeValue){
 										success:function(){
 											newTab.setTitle(nodeTitle);
 											RealBoard.emit("saveIDE",iId);
+											Sess.refresh();
 										}
 									});
 								}
@@ -1473,7 +1502,7 @@ Tree.on('itemcontextmenu', function(view, record, item, index, event) {
                     parentId: node.get("parentId"),
                     method: "copy"
                 };
-                myCookie.set("pasteData", Ext.encode(file));
+                myCookie.set("pasteData", Ext.encode(file), myCookie.exDate());
             }
         }
     }, {
@@ -1489,7 +1518,7 @@ Tree.on('itemcontextmenu', function(view, record, item, index, event) {
                     method: "cut"
                 };
                 item.style.opacity = 0.5;
-                myCookie.set("pasteData", Ext.encode(file));
+                myCookie.set("pasteData", Ext.encode(file), myCookie.exDate());
             }
         }
     }, {
@@ -2844,7 +2873,7 @@ var signinForm = function(){
 													if(res.success){
 														var data = res.data.data;
 														if(data){
-															myCookie.set("IDE",Ext.encode(data));
+															myCookie.set("IDE",Ext.encode(data), myCookie.exDate());
 															//window.location = "";
 															Ext.getCmp("signin-window").close();
 															return Container();
