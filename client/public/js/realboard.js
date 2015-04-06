@@ -356,6 +356,7 @@ var generateGrid = function(options){
 		autoLoad:{start:0,limit:Limit},
 		pageSize:Limit,
 		fields:Opt.Fields,
+		remoteSort:true,
 		proxy: {
 			type: 'jsonp',
 			url : API_URL+options.url,
