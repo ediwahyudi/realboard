@@ -71,7 +71,6 @@ RealBoard.openSocket = function(){
 				if(discussion && data.server == "local"){
 					discussion.expand();
 					applyChat(data);
-					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseChatFirebase",function(data){
@@ -79,7 +78,6 @@ RealBoard.openSocket = function(){
 				if(discussion && data.server == "firebase"){
 					discussion.expand();
 					applyChat(data);
-					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseChatFirebase",function(data){
@@ -87,7 +85,6 @@ RealBoard.openSocket = function(){
 				if(discussion){
 					discussion.expand();
 					applyChat(data);
-					Sess.refresh();
 				}
 			});
 			RealBoard.on("responseUpdateProfile"+Sess.getId(),function(){
@@ -96,54 +93,43 @@ RealBoard.openSocket = function(){
 			if(Sess.get("user_share") == "yes"){
 				RealBoard.on("requestInviteCollab"+Sess.getId(),function(data){
 					requestCollab(data);
-					Sess.refresh();
 				});
 				RealBoard.on("requestInviteCollabAll",function(data){
 					requestCollab(data);
-					Sess.refresh();
 				});
 				RealBoard.on("responseReceiveCollab"+Sess.getId(),function(data){
 					serverInfo(data,"User.joined");
-					Sess.refresh();
 				});
 				RealBoard.on("responseRejectCollab"+Sess.getId(),function(data){
 					serverInfo(data,"User.rejected");
-					Sess.refresh();
 				});
 			}
 			if(Sess.hasAccess("manager")){
 				RealBoard.on("responseApplyTask",function(data){
 					serverInfo(data,"Task.applied",'tc');
 					Ext.getCmp("main-data").setActiveTab(1);
-					Sess.refresh();
 				});
 			}
 			RealBoard.on("responseTask",function(){
 				Ext.getCmp("main-task-grid").getStore().load({params:{user:Sess.getId()}});
-				Sess.refresh();
 			});
 			RealBoard.on("responseNewTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.added",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
-				Sess.refresh();
 			});
 			RealBoard.on("responseUpdateTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.updated",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
-				Sess.refresh();
 			});
 			RealBoard.on("responseRemoveTask"+Sess.getId(),function(data){
 				serverInfo(data,"Task.removed",'tc');
 				Ext.getCmp("main-data").setActiveTab(1);
-				Sess.refresh();
 			});
 			RealBoard.on("responseSave",function(data){
 				serverInfo(data,"File.saved");
-				Sess.refresh();
 			});
 			RealBoard.on("responseNewfile",function(data){
 				serverInfo(data,"File.created");
-				Sess.refresh();
 			});
 			RealBoard.on("responseNewfolder",function(data){
 				serverInfo(data,"Folder.created");
@@ -151,15 +137,12 @@ RealBoard.openSocket = function(){
 			});
 			RealBoard.on("responseRemovefile",function(data){
 				serverInfo(data,"File.removed");
-				Sess.refresh();
 			});
 			RealBoard.on("responseRemovefolder",function(data){
 				serverInfo(data,"Folder.removed");
-				Sess.refresh();
 			});
 			RealBoard.on("responseUpload",function(data){
 				serverInfo(data,"File.uploaded");
-				Sess.refresh();
 			});
 			RealBoard.on("responseRenamefile",function(data){
 				serverInfo(data,"File.renamed");
@@ -167,17 +150,14 @@ RealBoard.openSocket = function(){
 			});
 			RealBoard.on("responseRenamefolder",function(data){
 				serverInfo(data,"Folder.renamed");
-				Sess.refresh();
 			});
 			RealBoard.on("responseConnected",function(data){
 				serverInfo(data,"User.connected");
 				refreshUserGrid();
-				Sess.refresh();
 			});
 			RealBoard.on("responseLeave",function(data){
 				serverInfo(data,"User.disconnected");
 				refreshUserGrid();
-				Sess.refresh();
 			});
 		}
 	};
@@ -950,7 +930,6 @@ RealBoardIDE.open = function(node,nodeValue){
 										success:function(){
 											newTab.setTitle(nodeTitle);
 											RealBoard.emit("saveIDE",iId);
-											Sess.refresh();
 										}
 									});
 								}
