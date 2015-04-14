@@ -321,13 +321,13 @@ var reusable = null;
 var Notify = function(html,title,position){
 	return Ext.create('widget.uxNotification', {
 		title: title || 'Notification',
-		position: position || 'tl',
+		position: position || 'tr',
 		manager: 'instructions',
 		cls: 'ux-notification-light',
 		iconCls: 'ux-notification-icon-information',
 		html: html || 'Sample message.',
-		autoCloseDelay: 5000,
-		slideBackDuration: 500,
+		autoCloseDelay: 800,
+		slideBackDuration: 300,
 		slideInAnimation: 'bounceOut',
 		slideBackAnimation: 'easeIn'
 	});
@@ -2774,6 +2774,9 @@ var createContainer = function() {
 		            id:"active-tab-1",
 		            html: '\
 		            <div id="welcome-container">\
+		            	<a href="https://github.com/morkid/realboard" class="rbog-top" target="_blank">\
+							<img src="'+ICON_PATH+'/github/fmog.png" alt="RealBoard on github" />\
+						</a>\
 						<span class="fa fa-desktop fa-5x"></span>\
 						 &nbsp; \
 						<span class="fa fa-laptop fa-5x"></span>\
@@ -2781,6 +2784,9 @@ var createContainer = function() {
 						<span class="fa fa-mobile fa-5x"></span>\
 						<h1>Welcome to <em><span class="R">Real</span><span class="B">Board</span></em>\
 							<small>Realtime collaborative IDE and simple project management</small>\
+							<a href="https://github.com/morkid/realboard" class="rbog" target="_blank">\
+								<img src="'+ICON_PATH+'/github/github-white.png" alt="RealBoard on github" />\
+							</a>\
 						</h1>\
 					</div>'
 		        }]
