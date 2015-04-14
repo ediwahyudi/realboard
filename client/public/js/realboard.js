@@ -321,7 +321,7 @@ var reusable = null;
 var Notify = function(html,title,position){
 	return Ext.create('widget.uxNotification', {
 		title: title || 'Notification',
-		position: position || 'tr',
+		position: position || 'tl',
 		manager: 'instructions',
 		cls: 'ux-notification-light',
 		iconCls: 'ux-notification-icon-information',
