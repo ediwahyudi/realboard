@@ -24,9 +24,10 @@ Realtime collaborative IDE and simple project management
 
 
 ## Running perfect on
-* ubuntu 14.04 LTS *trusty*
+* Ubuntu 14.04 LTS *trusty*
 * Centos 6.6
 * Debian 7 *wheezy*
+* FreeBSD 10.1
 
 ## Installation Guide :
 Coming soon
