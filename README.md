@@ -13,13 +13,12 @@ Realtime collaborative IDE and simple project management
 
 ![RealBoard-Client Collaborative IDE Preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb6.png)
 
-## Requirements :
+## Minimum Requirements :
 
 | Modules	| Min Version | Libraries / Extensions |
 | --------- |:-----------:| ----------------------:|
 | [NodeJs](https://nodejs.org/) | v0.10.25 | <ul><li>[Socket.io](https://github.com/Automattic/socket.io)</li><li>[Request](https://github.com/request/request)</li></ul> |
 | [PHP](http://php.net/) | >= 5.4 | <ul><li>SQLite3</li></ul> |
-
 
 ![RealBoard-Client Full profile manager](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb5.png)
 
