@@ -367,14 +367,36 @@ $config['proxy_ips'] = '';
 |
 */
 $config['ide_path'] = '/var/www/';
-$config_file = APPPATH . "../../config/config.json";
 
-if( file_exists($config_file) && !is_dir($config_file) )
+/*
+|--------------------------------------------------------------------------
+| Firebase Connection
+|--------------------------------------------------------------------------
+|
+| Change to your firebase domain and path so sync 
+| data from local to cloud
+|
+*/
+$config['firebase_url'] = 'https://morkid.firebaseio.com/';
+$config['firebase_auth'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Readlboard Config path
+|--------------------------------------------------------------------------
+|
+| Change to your config file to overwrite 
+| all default conguration 
+|
+*/
+$config['config_path'] = FCPATH . '../../server/config/config.json';
+
+if(file_exists($config['config_path']))
 {
-	$config_data = json_decode(file_get_contents($config_file),TRUE);
-	foreach($config_data as $key => $val)
-	{
-		$config[$key] = $val;
+	$conf = file_get_contents($config['config_path']);
+	$conf = json_decode($conf,1);
+	foreach ($conf as $key => $value) {
+		$config[$key] = $value;	
 	}
 }
 
