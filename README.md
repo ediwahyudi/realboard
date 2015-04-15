@@ -4,7 +4,7 @@ Realtime collaborative IDE and simple project management
 ![RealBoard-Client Dashboard preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb1.png)
 
 ## Feature list :
-* Realtime collaborative IDE *(Skip all conflict in writing)*
+* Realtime collaborative IDE *(Skip conflict in writing)*
 * Simple Project Management *(Create new / Get report)*
 * Simple Task Manager
 * Live discussion
@@ -23,7 +23,7 @@ Realtime collaborative IDE and simple project management
 ![RealBoard-Client Full profile manager](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb5.png)
 
 
-## Running perfect on
+## Running perfect on :
 * Ubuntu 14.04 LTS *trusty*
 * Centos 6.6
 * Debian 7 *wheezy*
