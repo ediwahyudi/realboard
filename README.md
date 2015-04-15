@@ -1,7 +1,7 @@
 # RealBoard - Client #
 Realtime collaborative IDE and simple project management
 
-## Feature list
+## Feature list :
 * Realtime collaborative IDE
 * Simple Project Management *(Create new / Get report)*
 * Simple Task Manager
