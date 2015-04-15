@@ -11,6 +11,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
 * Realtime collaborative IDE *(Skip conflict in writing)*
 * Simple Project Management *(Create new / Get report)*
 * Simple Task Manager
+* Simple Version Control
 * Live discussion
 * Live Notification
 * Live Invitation
