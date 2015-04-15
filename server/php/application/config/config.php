@@ -391,6 +391,9 @@ $config['firebase_auth'] = '';
 */
 $config['config_path'] = FCPATH . '../../server/config/config.json';
 
+
+// Generating external config if exists
+
 if(file_exists($config['config_path']))
 {
 	$conf = file_get_contents($config['config_path']);
