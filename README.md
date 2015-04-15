@@ -7,3 +7,4 @@ Realtime collaborative IDE and simple project management
 * Simple Task Manager
 
 ## Installation Guide :
+Coming soon
