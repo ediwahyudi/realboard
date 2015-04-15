@@ -1,6 +1,8 @@
 # RealBoard - Client #
 Realtime collaborative IDE and simple project management
 
+![RealBoard-Client Dashboard preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb1.png)
+
 ## Feature list :
 * Realtime collaborative IDE *(Skip all conflict in writing)*
 * Simple Project Management *(Create new / Get report)*
@@ -8,8 +10,6 @@ Realtime collaborative IDE and simple project management
 * Live discussion
 * Live Notification
 * Firebase Integration
-
-![RealBoard-Client Dashboard preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb1.png)
 
 ![RealBoard-Client Collaborative IDE Preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb6.png)
 
