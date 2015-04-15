@@ -9,7 +9,8 @@ Realtime collaborative IDE and simple project management
 * Simple Task Manager
 * Live discussion
 * Live Notification
-* Firebase Integration
+* Live Invitation
+* [Firebase](https://www.firebase.com/) Integration
 
 ![RealBoard-Client Collaborative IDE Preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb6.png)
 
