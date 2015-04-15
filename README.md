@@ -1,5 +1,9 @@
-# RealBoard - Client
+# RealBoard - Client #
 Realtime collaborative IDE and simple project management
 
-Installation Guide :
-Coming soon
+## Feature list
+* Realtime collaborative IDE
+* Simple Project Management
+* Simple Task Manager
+
+## Installation Guide :
