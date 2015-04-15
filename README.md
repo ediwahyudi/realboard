@@ -1,5 +1,13 @@
-# RealBoard - Client
+# RealBoard - Client #
 Realtime collaborative IDE and simple project management
 
-Installation Guide :
+## Feature list :
+* Realtime collaborative IDE
+* Simple Project Management *(Create new / Get report)*
+* Simple Task Manager
+* Live discussion
+* Live Notification
+* Firebase Integration
+
+## Installation Guide :
 Coming soon
