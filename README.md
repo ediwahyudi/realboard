@@ -1,9 +1,9 @@
 # RealBoard - Client #
 Realtime collaborative IDE and simple project management
 
-...**RealBoard - Client** is an open source application that you can use to make your project more alive and controlled in real time. Kill many conflicts of writing code between the team with each other. It's powerful to control the previous version to the latest version of your project. 
+**RealBoard - Client** is an open source application that you can use to make your project more alive and controlled in real time. Kill many conflicts of writing code between the team with each other. It's powerful to control the previous version to the latest version of your project.
 
-...You don't need to close and reopen your IDE to get a change, because we are all set for you. So, let's write a document together in real time now.
+You don't need to close and reopen your IDE to get a change, because we are all set for you. So, let's write a document together in real time now.
 
 ![RealBoard-Client Dashboard preview](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb1.png)
 
