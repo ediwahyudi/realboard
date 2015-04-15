@@ -7,6 +7,7 @@ Realtime collaborative IDE and simple project management
 * Simple Task Manager
 * Live discussion
 * Live Notification
+* Firebase Integration
 
 ## Installation Guide :
 Coming soon
