@@ -51,6 +51,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```shell
   portsnap fetch && portsnap extract && portsnap update
   cd /usr/ports/www/apache24 && make install clean
+  ln -s /usr/local/www/apache24/data /var/www
   ```
 
 2. __Install php5__
