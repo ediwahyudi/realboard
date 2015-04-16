@@ -51,7 +51,8 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```shell
   portsnap fetch && portsnap extract && portsnap update
   cd /usr/ports/www/apache24 && make install clean
-  ln -s /usr/local/www/apache24/data /var/www
+  mkdir /var/www
+  ln -s /usr/local/www/apache24/data /var/www/html
   ```
 
 2. __Install php5__
@@ -94,14 +95,24 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
 
 4. __Download And Setup RealBoard - Client__
-  * __Install git and ...__
+  * __Install git__
+  Ubuntu / Debian
   ```shell
   sudo apt-get update
   sudo apt-get install git-core
   cd /var/www/html
   git clone https://github.com/morkid/realboard.git
   ```
-
+  Centos
+  ```
+  ...
+  ```
+  
+  FreeBSD
+  ```
+  cd /usr/ports/devel/git && make install clean
+  ```
+  
   * __Setup realboard configuration__
   ```shell
   sudo nano /var/www/realboard/server/config.json
