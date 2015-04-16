@@ -45,7 +45,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  yum install httpd
   ```
   * __FreeBSD__
   ```shell
@@ -65,7 +65,8 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  sudo yum install php5
+  sudo yum install php5-sqlite3
   ```
   * __FreeBSD__
   ```shell
@@ -87,11 +88,14 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  sudo yum install epel-release
+  sudo yum install nodejs
+  sudo yum install npm
   ```
   * __FreeBSD__
   ```shell
-  ...
+  cd /usr/ports/www/node && make install clean
+  cd /usr/ports/www/npm && make install clean
   ```
 
 4. __Download And Setup RealBoard - Client__
@@ -103,7 +107,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   Centos
   ```
-  ...
+  sudo yum install git
   ```
   
   FreeBSD
