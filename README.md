@@ -45,11 +45,14 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  yum install httpd
   ```
   * __FreeBSD__
   ```shell
-  ...
+  portsnap fetch && portsnap extract && portsnap update
+  cd /usr/ports/www/apache24 && make install clean
+  mkdir /var/www
+  ln -s /usr/local/www/apache24/data /var/www/html
   ```
 
 2. __Install php5__
@@ -62,12 +65,18 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  sudo yum install php5
+  sudo yum install php5-sqlite3
   ```
   * __FreeBSD__
   ```shell
-  ...
+  cd /usr/ports/www/mod_php56 && make install clean
+  cd /usr/ports/lang/php56-extensions && make config
+  # check MCRYPT, JSON and SQLITE3 extension
+  make install clean
+  cd /usr/ports/www/mod_php56 && make install clean
   ```
+  More [detail](http://www.cyberciti.biz/faq/how-to-install-apache-mysql-php-stack-on-freebsd-unix-server/).
 
 3. __Install NodeJS__
 
@@ -79,31 +88,45 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * Centos
   ```shell
-  ...
+  sudo yum install epel-release
+  sudo yum install nodejs
+  sudo yum install npm
   ```
   * __FreeBSD__
   ```shell
-  ...
+  cd /usr/ports/www/node && make install clean
+  cd /usr/ports/www/npm && make install clean
   ```
 
 4. __Download And Setup RealBoard - Client__
-  * __Install git and ...__
+  * __Install git__
+  
+    Ubuntu / Debian
+    ```shell
+    sudo apt-get update
+    sudo apt-get install git-core
+    ```
+    Centos
+    ```
+    sudo yum install git
+    ```
+    
+    FreeBSD
+    ```
+    cd /usr/ports/devel/git && make install clean
+    ```
+  
+  * __Download RealBoard and setup configuration__
   ```shell
-  sudo apt-get update
-  sudo apt-get install git-core
   cd /var/www/html
   git clone https://github.com/morkid/realboard.git
-  ```
-
-  * __Setup realboard configuration__
-  ```shell
-  sudo nano /var/www/realboard/server/config.json
+  nano /var/www/realboard/server/config.json
   ```
 
   * __Change ide path and firebase url (optional) value__
   ```json
   {
-    "ide_path":"/var/www/",
+    "ide_path":"/var/www/html/",
     "firebase_url":"https://you.firebaseio.com/"
   }
   ```
@@ -121,12 +144,13 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
 
   * Open [http://__yourserver__/realboard/client](http://localhost/realboard/client) and signin using :
-    * email : superuser@localhost.localdomain
+    * email : superuser@example.com
     * password : superuser
 
   *  __Add new user__
     * Expand __Data panel__ at the bottom of application
-    * Click team add new user
+    * Click team 
+    * Add new user
 
 ## License
 
