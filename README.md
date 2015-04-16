@@ -69,7 +69,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```shell
   cd /usr/ports/www/mod_php56 && make install clean
   cd /usr/ports/lang/php56-extensions && make config
-  # check MCRYPT and SQLITE3 extension
+  # check MCRYPT, JSON and SQLITE3 extension
   make install clean
   ```
 
