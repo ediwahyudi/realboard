@@ -149,7 +149,8 @@ You don't need to close and reopen your IDE to get a change, because we are all 
 
   *  __Add new user__
     * Expand __Data panel__ at the bottom of application
-    * Click team add new user
+    * Click team 
+    * Add new user
 
 ## License
 
