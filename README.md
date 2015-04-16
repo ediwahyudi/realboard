@@ -100,22 +100,23 @@ You don't need to close and reopen your IDE to get a change, because we are all 
 
 4. __Download And Setup RealBoard - Client__
   * __Install git__
-  Ubuntu / Debian
-  ```shell
-  sudo apt-get update
-  sudo apt-get install git-core
-  ```
-  Centos
-  ```
-  sudo yum install git
-  ```
   
-  FreeBSD
-  ```
-  cd /usr/ports/devel/git && make install clean
-  ```
+    Ubuntu / Debian
+    ```shell
+    sudo apt-get update
+    sudo apt-get install git-core
+    ```
+    Centos
+    ```
+    sudo yum install git
+    ```
+    
+    FreeBSD
+    ```
+    cd /usr/ports/devel/git && make install clean
+    ```
   
-  * __Download RealBoard and change configuration__
+  * __Download RealBoard and setup configuration__
   ```shell
   cd /var/www/html
   git clone https://github.com/morkid/realboard.git
