@@ -87,7 +87,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
 
 4. __Download And Setup RealBoard - Client__
-
+  * __Install git and ...__
   ```shell
   sudo apt-get update
   sudo apt-get install git-core
@@ -95,12 +95,12 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   git clone https://github.com/morkid/realboard.git
   ```
 
-  Setup realboard configuration
+  * __Setup realboard configuration__
   ```shell
   sudo nano /var/www/realboard/server/config.json
   ```
 
-  Change ide path and firebase url (optional) value
+  * __Change ide path and firebase url (optional) value__
   ```json
   {
     "ide_path":"/var/www/",
@@ -108,25 +108,25 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   }
   ```
   
-  Change directory permission
+  * __Change directory permission__
   ```shell
   chown -R www-data:www-data /var/www
   chmod 755 $(find /var/www/html/ -type d)
   ```
   
-  Run node server
+  * __Run node server__
   ```shell
   cd /var/www/html/realboard/server/js
   sudo node server.js
   ```
 
-  Open [http://__yourserver__/realboard/client](http://localhost/realboard/client) and signin using :
-  * email : superuser@localhost.localdomain
-  * password : superuser
+  * Open [http://__yourserver__/realboard/client](http://localhost/realboard/client) and signin using :
+    * email : superuser@localhost.localdomain
+    * password : superuser
 
-  __Add new user__
-  * Expand __Data panel__ at the bottom of application
-  * Click team add new user
+  *  __Add new user__
+    * Expand __Data panel__ at the bottom of application
+    * Click team add new user
 
 ## License
 
