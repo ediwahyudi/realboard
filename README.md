@@ -144,7 +144,7 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
 
   * Open [http://__yourserver__/realboard/client](http://localhost/realboard/client) and signin using :
-    * email : superuser@localhost.localdomain
+    * email : superuser@example.com
     * password : superuser
 
   *  __Add new user__
