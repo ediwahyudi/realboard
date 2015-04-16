@@ -100,8 +100,6 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```shell
   sudo apt-get update
   sudo apt-get install git-core
-  cd /var/www/html
-  git clone https://github.com/morkid/realboard.git
   ```
   Centos
   ```
@@ -113,15 +111,17 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   cd /usr/ports/devel/git && make install clean
   ```
   
-  * __Setup realboard configuration__
+  * __Download RealBoard and change configuration__
   ```shell
-  sudo nano /var/www/realboard/server/config.json
+  cd /var/www/html
+  git clone https://github.com/morkid/realboard.git
+  nano /var/www/realboard/server/config.json
   ```
 
   * __Change ide path and firebase url (optional) value__
   ```json
   {
-    "ide_path":"/var/www/",
+    "ide_path":"/var/www/html/",
     "firebase_url":"https://you.firebaseio.com/"
   }
   ```
