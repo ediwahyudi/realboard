@@ -26,9 +26,6 @@ You don't need to close and reopen your IDE to get a change, because we are all 
 | [NodeJs](https://nodejs.org/) | v0.10.25 | <ul><li>[Socket.io](https://github.com/Automattic/socket.io)</li><li>[Firebase](https://www.npmjs.com/package/firebase)</li><li>[Request](https://github.com/request/request)</li></ul> |
 | [PHP](http://php.net/) | >= 5.4 | <ul><li>SQLite3</li></ul> |
 
-![RealBoard-Client Full profile manager](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb5.png)
-
-
 ## Running perfect on :
 * Ubuntu 14.04 LTS *trusty*
 * Centos 6.6
@@ -151,6 +148,8 @@ You don't need to close and reopen your IDE to get a change, because we are all 
     * Expand __Data panel__ at the bottom of application
     * Click team 
     * Add new user
+
+![RealBoard-Client Full profile manager](https://raw.githubusercontent.com/morkid/realboard/master/client/public/img/realboard/rb5.png)
 
 ## License
 
