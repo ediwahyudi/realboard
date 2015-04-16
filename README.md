@@ -49,7 +49,8 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   ```
   * __FreeBSD__
   ```shell
-  ...
+  portsnap fetch && portsnap extract && portsnap update
+  cd /usr/ports/www/apache24 && make install clean
   ```
 
 2. __Install php5__
