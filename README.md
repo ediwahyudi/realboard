@@ -71,7 +71,9 @@ You don't need to close and reopen your IDE to get a change, because we are all 
   cd /usr/ports/lang/php56-extensions && make config
   # check MCRYPT, JSON and SQLITE3 extension
   make install clean
+  cd /usr/ports/www/mod_php56 && make install clean
   ```
+  More [detail](http://www.cyberciti.biz/faq/how-to-install-apache-mysql-php-stack-on-freebsd-unix-server/).
 
 3. __Install NodeJS__
 
