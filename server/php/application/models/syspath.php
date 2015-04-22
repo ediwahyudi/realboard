@@ -31,7 +31,9 @@ class Syspath extends CI_Model
 			return "File ".$this->_filter_path($file_path)." has been removed or does not exists";
 		}
 		
-		$file_size = get_file_info($file_path, "size")["size"];
+		$file_size = get_file_info($file_path, "size");
+		$file_size = $file_size["size"];
+		
 		if( $file_size/1000000 > 1)
 		{
 			return "Sorry this file cannot to open.".
