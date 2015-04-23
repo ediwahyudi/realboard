@@ -24,8 +24,8 @@ var setSign = function(type,user){
 	RealBoardFirebase.child("user/"+user.user_id).update({user_active:act});
 	request(user.api+"/getSignToday?sort=[{\"property\":\"sign_time\",\"direction\":\"DESC\"}]", function (err, res, data) {
 		if (!err && res.statusCode == 200) {
-			var obj = {};
-			if(obj = JSON.parse(data)){
+			if(data){
+				var obj = JSON.parse(data);
 				RealBoardFirebase.child("sign").set(obj.items);
 			}
 		}
@@ -35,8 +35,8 @@ var setSign = function(type,user){
 var sendTask = function(user){
 	request(user.api+"/getUserTask?access=true", function (err, res, data) {
 		if (!err && res.statusCode == 200) {
-			var obj = {};
-			if(obj = JSON.parse(data)){
+			if(data){
+				var obj = JSON.parse(data);
 				RealBoardFirebase.child("user_task").set(obj.items);
 			}
 		}
@@ -49,8 +49,8 @@ RealBoardFirebase.child("api").once("value",function(buffer){
 		apiUrl = data;
 		request(apiUrl+"/getUsers?user=0&id=0",function(err,res,data){
 			if(!err && res.statusCode == 200){
-				if(obj = JSON.parse(data)){
-					var o = [];
+				if(data){
+					var obj = JSON.parse(data),o = [];
 					for(var i in obj.items){
 						o[obj.items[i].user_id] = obj.items[i];
 					}
@@ -60,8 +60,8 @@ RealBoardFirebase.child("api").once("value",function(buffer){
 		});
 		request(apiUrl+"/getClient",function(err,res,data){
 			if(!err && res.statusCode == 200){
-				if(obj = JSON.parse(data)){
-					var o = [];
+				if(data){
+					var obj = JSON.parse(data),o = [];
 					for(var i in obj.items){
 						o[obj.items[i].client_id] = obj.items[i];
 					}
@@ -71,8 +71,8 @@ RealBoardFirebase.child("api").once("value",function(buffer){
 		});
 		request(apiUrl+"/getProject",function(err,res,data){
 			if(!err && res.statusCode == 200){
-				if(obj = JSON.parse(data)){
-					var o = [];
+				if(data){
+					var obj = JSON.parse(data),o = [];
 					for(var i in obj.items){
 						o[obj.items[i].project_id] = obj.items[i];
 					}
@@ -82,8 +82,8 @@ RealBoardFirebase.child("api").once("value",function(buffer){
 		});
 		request(apiUrl+"/getJob",function(err,res,data){
 			if(!err && res.statusCode == 200){
-				if(obj = JSON.parse(data)){
-					var o = [];
+				if(data){
+					var obj = JSON.parse(data),o = [];
 					for(var i in obj.items){
 						o[obj.items[i].job_id] = obj.items[i];
 					}
@@ -93,8 +93,8 @@ RealBoardFirebase.child("api").once("value",function(buffer){
 		});
 		request(apiUrl+"/getTask",function(err,res,data){
 			if(!err && res.statusCode == 200){
-				if(obj = JSON.parse(data)){
-					var o = {};
+				if(data){
+					var obj = JSON.parse(data),o = [];
 					for(var i in obj.items){
 						o[obj.items[i].task_id] = obj.items[i];
 					}
